@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>슬라이더</title>
+    <style>
+        * { margin:0; padding:0;}
+        ul,ol,li { list-style:none;}
+
+        #slider { width:80%; margin:0 auto; overflow: hidden; position:relative;}
+        .view { display:flex; width:400%; transition:all 0.5s;}
+        .view > div { width:25%; height:50vh; color:#fff; font-size:100px; display:flex; justify-content:center; align-items:center;}
+        .view > div:nth-child(1) { background-color:red;}
+        .view > div:nth-child(2) { background-color:blue;}
+        .view > div:nth-child(3) { background-color:green;}
+        .view > div:nth-child(4) { background-color:pink;}
+
+        .pager { position:absolute; left:50%; transform:translateX(-50%); bottom:30px; display:flex; }
+        .pager li { width:20px; height:20px; border-radius:50%; background-color:#000; text-indent:-9999px; margin:0 10px;}
+        .pager li.on { background-color:#fff;}
+
+        .left { position:absolute; width:50px; height:50px; left:0; top:50%; transform:translateY(-50%);}
+        .right { position:absolute; width:50px; height:50px; right:0; top:50%; transform:translateY(-50%);}
+
+        .change { position:absolute; left:80%; bottom:30px;}
+        .change button { display:none;}
+        .change .play { display:block;}
+    </style>
+</head>
+<body>
+    <div id="slider">
+        <div class="view">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+        </div>
+        <ul class="pager">
+            <li class="on" data-index="0">1</li>
+            <li data-index="1">2</li>
+            <li data-index="2">3</li>
+            <li data-index="3">4</li>
+        </ul>
+        <button class="left">왼쪽</button>
+        <button class="right">오른쪽</button>
+    </div>
+    <script>
+        const slideWrap = document.querySelector("#slider");
+        const sliderView = document.querySelector(".view");
+        const sliderLast = document.querySelectorAll(".view > div").length;
+        const idx = document.querySelectorAll(".pager li");
+       
+        const leftBtn = document.querySelector(".left");
+        const rightBtn = document.querySelector(".right");
+
+        let sliderNumber = 0;
+
+        leftBtn.addEventListener("click",()=>{
+
+            if(sliderNumber == 0)
+            {
+                sliderNumber = sliderLast-1
+
+            }
+            else {
+               
+                sliderNumber--;
+            }
+
+            //함수로 코드정리할 부분
+            for(let i=0; i<idx.length; i++){
+
+                idx[i].classList.remove("on");
+            }
+
+            idx[sliderNumber].classList.add("on");
+
+            sliderView.style.marginLeft = (-100*sliderNumber)+"%";
+         
+        });
+
+        rightBtn.addEventListener("click",()=>{
+
+           
+            if(sliderNumber == sliderLast-1)
+            {
+                sliderNumber = 0;
+            }
+            else
+            {
+                sliderNumber++;
+            }
+
+            for(let i=0; i<idx.length; i++){
+
+                idx[i].classList.remove("on");
+            }
+
+            idx[sliderNumber].classList.add("on");
+
+            sliderView.style.marginLeft = (-100*sliderNumber)+"%";
+        });
+
+
+
+        for(let i=0; i<idx.length; i++) 
+        {
+            idx[i].addEventListener("click",(e)=>{
+
+                //함수로 코드 정리할 부분
+                for(let i=0; i<idx.length; i++){
+
+                    idx[i].classList.remove("on");
+                }
+
+                e.currentTarget.classList.add("on");
+                sliderNumber = e.currentTarget.getAttribute("data-index");
+                sliderView.style.marginLeft = (-100*sliderNumber)+"%";
+               
+            });
+        }
+    </script>
+</body>
+</html>
